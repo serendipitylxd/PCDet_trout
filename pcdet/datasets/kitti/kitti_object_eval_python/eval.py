@@ -26,9 +26,16 @@ def get_thresholds(scores: np.ndarray, num_gt, num_sample_pts=41):
         current_recall += 1 / (num_sample_pts - 1.0)
     return thresholds
 
+        #0: 'Building',
+        #1: 'Fully_loaded_cargo_ship',
+        #2: 'Fully_loaded_container_ship',
+        #3: 'Lock_gate',
+        #4: 'Tree',
+        #5: 'Unladen_cargo_ship' 
+
 
 def clean_data(gt_anno, dt_anno, current_class, difficulty):
-    CLASS_NAMES = ['car', 'pedestrian', 'cyclist', 'van', 'person_sitting', 'truck']
+    CLASS_NAMES = ['Building', 'Fully_loaded_cargo_ship', 'Fully_loaded_container_ship', 'Lock_gate', 'Tree', 'Unladen_cargo_ship']
     MIN_HEIGHT = [40, 25, 25]
     MAX_OCCLUSION = [0, 1, 2]
     MAX_TRUNCATION = [0.15, 0.3, 0.5]
@@ -44,11 +51,11 @@ def clean_data(gt_anno, dt_anno, current_class, difficulty):
         valid_class = -1
         if (gt_name == current_cls_name):
             valid_class = 1
-        elif (current_cls_name == "Pedestrian".lower()
-              and "Person_sitting".lower() == gt_name):
-            valid_class = 0
-        elif (current_cls_name == "Car".lower() and "Van".lower() == gt_name):
-            valid_class = 0
+        #elif (current_cls_name == "Pedestrian".lower()
+        #      and "Person_sitting".lower() == gt_name):
+        #    valid_class = 0
+        #elif (current_cls_name == "Car".lower() and "Van".lower() == gt_name):
+        #    valid_class = 0
         else:
             valid_class = -1
         ignore = False
@@ -360,6 +367,12 @@ def calculate_iou_partly(gt_annos, dt_annos, metric, num_parts=50):
         if metric == 0:
             gt_boxes = np.concatenate([a["bbox"] for a in gt_annos_part], 0)
             dt_boxes = np.concatenate([a["bbox"] for a in dt_annos_part], 0)
+            #print(type(gt_boxes))  # Should be <class 'numpy.ndarray'>
+            #print(type(dt_boxes))  # Should be <class 'numpy.ndarray'>
+            #print(gt_boxes.shape)  # Should be (N, 4) or similar
+            #print(dt_boxes.shape)  # Should be (M, 4) or similar
+            #gt_boxes = gt_boxes.astype(np.float32)
+            #dt_boxes = dt_boxes.astype(np.float32)
             overlap_part = image_box_overlap(gt_boxes, dt_boxes)
         elif metric == 1:
             loc = np.concatenate(
@@ -637,20 +650,26 @@ def do_coco_style_eval(gt_annos, dt_annos, current_classes, overlap_ranges,
 
 
 def get_official_eval_result(gt_annos, dt_annos, current_classes, PR_detail_dict=None):
-    overlap_0_7 = np.array([[0.7, 0.5, 0.5, 0.7,
-                             0.5, 0.7], [0.7, 0.5, 0.5, 0.7, 0.5, 0.7],
-                            [0.7, 0.5, 0.5, 0.7, 0.5, 0.7]])
-    overlap_0_5 = np.array([[0.7, 0.5, 0.5, 0.7,
-                             0.5, 0.5], [0.5, 0.25, 0.25, 0.5, 0.25, 0.5],
-                            [0.5, 0.25, 0.25, 0.5, 0.25, 0.5]])
+    overlap_0_7 = np.array([[0.7, 0.7, 0.7, 0.7,
+                             0.7, 0.7], [0.7, 0.7, 0.7, 0.7, 0.7, 0.7],
+                            [0.7, 0.7, 0.7, 0.7, 0.7, 0.7]])
+    overlap_0_5 = np.array([[0.5, 0.5, 0.5, 0.5,
+                             0.5, 0.5], [0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
+                            [0.5, 0.5, 0.5, 0.5, 0.5, 0.5]])
     min_overlaps = np.stack([overlap_0_7, overlap_0_5], axis=0)  # [2, 3, 5]
     class_to_name = {
-        0: 'Car',
-        1: 'Pedestrian',
-        2: 'Cyclist',
-        3: 'Van',
-        4: 'Person_sitting',
-        5: 'Truck'
+        #0: 'Car',
+        #1: 'Pedestrian',
+        #2: 'Cyclist',
+        #3: 'Van',
+        #4: 'Person_sitting',
+        #5: 'Truck',
+        0: 'Building',
+        1: 'Fully_loaded_cargo_ship',
+        2: 'Fully_loaded_container_ship',
+        3: 'Lock_gate',
+        4: 'Tree',
+        5: 'Unladen_cargo_ship'   
     }
     name_to_class = {v: n for n, v in class_to_name.items()}
     if not isinstance(current_classes, (list, tuple)):

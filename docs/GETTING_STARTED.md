@@ -13,7 +13,7 @@ Currently we provide the dataloader of KITTI, NuScenes, Waymo, Lyft and Pandaset
 * NOTE: if you already have the data infos from `pcdet v0.1`, you can choose to use the old infos and set the DATABASE_WITH_FAKELIDAR option in tools/cfgs/dataset_configs/kitti_dataset.yaml as True. The second choice is that you can create the infos and gt database again and leave the config unchanged.
 
 ```
-OpenPCDet
+PCDet_trout
 ├── data
 │   ├── kitti
 │   │   │── ImageSets
@@ -34,7 +34,7 @@ python -m pcdet.datasets.kitti.kitti_dataset create_kitti_infos tools/cfgs/datas
 * Please download the official [NuScenes 3D object detection dataset](https://www.nuscenes.org/download) and 
 organize the downloaded files as follows: 
 ```
-OpenPCDet
+PCDet_trout
 ├── data
 │   ├── nuscenes
 │   │   │── v1.0-trainval (or v1.0-mini if you use mini)
@@ -71,7 +71,7 @@ including the training data `training_0000.tar~training_0031.tar` and the valida
 data `validation_0000.tar~validation_0007.tar`.
 * Unzip all the above `xxxx.tar` files to the directory of `data/waymo/raw_data` as follows (You could get 798 *train* tfrecord and 202 *val* tfrecord ):  
 ```
-OpenPCDet
+PCDet_trout
 ├── data
 │   ├── waymo
 │   │   │── ImageSets
@@ -129,7 +129,7 @@ python -m pcdet.datasets.argo2.argo2_dataset --root_path data/argo2/sensor --out
 - If the CPU memory of your machine is limited, you can set `--workers=0` in the training script.
 - The organized files are as follows:
 ```
-OpenPCDet
+PCDet_trout
 ├── data
 │   ├── argo2
 │   │   │── ImageSets
@@ -186,7 +186,7 @@ python -m pcdet.datasets.once.once_dataset --func create_once_infos --cfg_file t
 * Please download the official [Lyft Level5 perception dataset](https://level-5.global/data/perception) and 
 organize the downloaded files as follows: 
 ```
-OpenPCDet
+PCDet_trout
 ├── data
 │   ├── lyft
 │   │   │── ImageSets
@@ -220,7 +220,7 @@ python -m pcdet.datasets.lyft.lyft_dataset --func create_lyft_infos \
 ## Pretrained Models
 If you would like to train [CaDDN](../tools/cfgs/kitti_models/CaDDN.yaml), download the pretrained [DeepLabV3 model](https://download.pytorch.org/models/deeplabv3_resnet101_coco-586e9e4e.pth) and place within the `checkpoints` directory. Please make sure the [kornia](https://github.com/kornia/kornia) is installed since it is needed for `CaDDN`.
 ```
-OpenPCDet
+PCDet_trout
 ├── checkpoints
 │   ├── deeplabv3_resnet101_coco-586e9e4e.pth
 ├── data

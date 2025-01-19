@@ -47,7 +47,10 @@ class CustomDataset(DatasetTemplate):
         self.logger.info('Total samples for CUSTOM dataset: %d' % (len(custom_infos)))
 
     def get_label(self, idx):
-        label_file = self.root_path / 'labels' / ('%s.txt' % idx)
+        if self.split == 'test':  # 检查是否为test模式
+            label_file = self.root_path / 'labels_test' / ('%s.txt' % idx)  # 使用point_test文件夹
+        else:
+            label_file = self.root_path / 'labels' / ('%s.txt' % idx)  # 其他模式使用points文件夹
         assert label_file.exists()
         with open(label_file, 'r') as f:
             lines = f.readlines()
@@ -63,10 +66,16 @@ class CustomDataset(DatasetTemplate):
         return np.array(gt_boxes, dtype=np.float32), np.array(gt_names)
 
     def get_lidar(self, idx):
-        lidar_file = self.root_path / 'points' / ('%s.npy' % idx)
+        if self.split == 'test':  # 检查是否为test模式
+            lidar_file = self.root_path / 'points_test' / ('%s.npy' % idx)  # 使用point_test文件夹
+        else:
+            lidar_file = self.root_path / 'points' / ('%s.npy' % idx)  # 其他模式使用points文件夹
         assert lidar_file.exists()
         point_features = np.load(lidar_file)
         return point_features
+        
+        
+    
 
     def set_split(self, split):
         super().__init__(
@@ -229,20 +238,21 @@ class CustomDataset(DatasetTemplate):
                 )
                 f.write(line)
 
-
 def create_custom_infos(dataset_cfg, class_names, data_path, save_path, workers=4):
     dataset = CustomDataset(
         dataset_cfg=dataset_cfg, class_names=class_names, root_path=data_path,
         training=False, logger=common_utils.create_logger()
     )
-    train_split, val_split = 'train', 'val'
+    train_split, val_split, test_split = 'train', 'val', 'test'  # 添加test
     num_features = len(dataset_cfg.POINT_FEATURE_ENCODING.src_feature_list)
 
     train_filename = save_path / ('custom_infos_%s.pkl' % train_split)
     val_filename = save_path / ('custom_infos_%s.pkl' % val_split)
+    test_filename = save_path / ('custom_infos_%s.pkl' % test_split)  # 添加test的文件名
 
     print('------------------------Start to generate data infos------------------------')
 
+    # 处理train数据集
     dataset.set_split(train_split)
     custom_infos_train = dataset.get_infos(
         class_names, num_workers=workers, has_label=True, num_features=num_features
@@ -251,15 +261,26 @@ def create_custom_infos(dataset_cfg, class_names, data_path, save_path, workers=
         pickle.dump(custom_infos_train, f)
     print('Custom info train file is saved to %s' % train_filename)
 
+    # 处理val数据集
     dataset.set_split(val_split)
     custom_infos_val = dataset.get_infos(
         class_names, num_workers=workers, has_label=True, num_features=num_features
     )
     with open(val_filename, 'wb') as f:
         pickle.dump(custom_infos_val, f)
-    print('Custom info train file is saved to %s' % val_filename)
+    print('Custom info val file is saved to %s' % val_filename)
+
+    # 处理test数据集
+    dataset.set_split(test_split)
+    custom_infos_test = dataset.get_infos(
+        class_names, num_workers=workers, has_label=True, num_features=num_features  # test集通常没有标注,但是本数据集有
+    )
+    with open(test_filename, 'wb') as f:
+        pickle.dump(custom_infos_test, f)
+    print('Custom info test file is saved to %s' % test_filename)
 
     print('------------------------Start create groundtruth database for data augmentation------------------------')
+    # 只为train集创建groundtruth database
     dataset.set_split(train_split)
     dataset.create_groundtruth_database(train_filename, split=train_split)
     print('------------------------Data preparation done------------------------')
@@ -277,7 +298,7 @@ if __name__ == '__main__':
         ROOT_DIR = (Path(__file__).resolve().parent / '../../../').resolve()
         create_custom_infos(
             dataset_cfg=dataset_cfg,
-            class_names=['Vehicle', 'Pedestrian', 'Cyclist'],
-            data_path=ROOT_DIR / 'data' / 'custom',
-            save_path=ROOT_DIR / 'data' / 'custom',
+            class_names=['Building', 'Fully_loaded_cargo_ship', 'Fully_loaded_container_ship', 'Lock_gate', 'Tree', 'Unladen_cargo_ship'],
+            data_path=ROOT_DIR / 'data' / 'TROUT',
+            save_path=ROOT_DIR / 'data' / 'TROUT',
         )

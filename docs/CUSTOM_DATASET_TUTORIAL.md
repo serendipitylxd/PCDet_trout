@@ -10,7 +10,7 @@ Annotations are stored in the `.txt`. Each line represents a box in a given scen
 1.50 1.46 0.10 5.12 1.85 4.13 1.56 Vehicle
 5.54 0.57 0.41 1.08 0.74 1.95 1.57 Pedestrian
 ```
-The box should in the unified 3D box definition (see [README](../README.md))
+The box should in the unified 3D box definition (see [README(PCDet)](../README(PCDet).md))
 
 ## Files structure
 Files should be placed as the following folder structure:

@@ -1,0 +1,10 @@
+git config --global user.name "serendipitylxd"
+git config --global user.email "luxiaodong1217@163.com"
+
+
+git commit -m "PCDet_trout"
+git remote add origin git@github.com:serendipitylxd/PCDet_trout.git
+git remote set-url origin git@github.com:serendipitylxd/PCDet_trout.git
+git push origin master
+
+
