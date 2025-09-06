@@ -14,7 +14,7 @@ NOTE: Please re-install `pcdet v0.5` by running `python setup.py develop` even i
 
 a. Clone this repository.
 ```shell
-git clone https://github.com/open-mmlab/OpenPCDet待修改
+https://github.com/serendipitylxd/PCDet_trout
 ```
 
 b. Install the dependent libraries as follows:
