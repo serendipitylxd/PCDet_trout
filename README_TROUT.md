@@ -88,7 +88,7 @@ pip install open3d
 
 Download the trained pv_rcnn model and place it in a folder. Verify that the installation is successful. If it is successful, You will see the following image in Open3D.
 
-[pv_rcnn_trout_158M.pth](https://download.openmmlab.com/mmdetection/v3.0/dab_detr/dab-detr_r50_8xb2-50e_coco/dab-detr_r50_8xb2-50e_coco_20221122_120837-c1035c8c.pth) 
+[pv_rcnn_trout_158M.pth](https://drive.google.com/file/d/1ZMkAuJGkkiawNI5-4aW6TDcR2O3Zwdx3/view?usp=sharing) 
 
 ```
 PCDet_trout
