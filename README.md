@@ -29,7 +29,7 @@ The `TROUT` dataset contains the following specific attributes:
 2) 16000 frames of UAV image data, multi-LiDAR point cloud data, water depth data, etc. The real-time difference of the same frame data from different sensors is less than 0.1s;
 3) 16000 frames of data of 85216 targets with detailed labeling information, including water level, 2D and 3D boxes of targets, and other labeling information.
 The format of the dataset and annotation information is modeled after the Coco, Kitti, and PCDet_custom datasets, which is convenient for other researchers to get a better handle on the TROUT dataset and quickly conduct related research.
-DATA at：[Coco_TROUT_data](https://drive.google.com/file/d/1mFQS-TTOR1sSjfPCuIeryK_LND2CLhk9/view?usp=sharing), [Kitti_TROUT_data](https://drive.google.com/file/d/1E5cQHYgv8s7pCfQyvnH2FvPhxDPe2lxb/view?usp=sharing), [PCDet_TROUT_data](https://drive.google.com/file/d/1JCClYd6egTm0AxXtW80L18AySgG45_og/view?usp=sharing).
+DATA at：[Coco_TROUT_data](https://drive.google.com/file/d/1mFQS-TTOR1sSjfPCuIeryK_LND2CLhk9/view?usp=sharing), [Kitti_TROUT_data](https://drive.google.com/file/d/1E5cQHYgv8s7pCfQyvnH2FvPhxDPe2lxb/view?usp=sharing), [PCDet_TROUT_data](https://drive.google.com/file/d/1JCClYd6egTm0AxXtW80L18AySgG45_og/view?usp=sharing), [TROUT add info](https://drive.google.com/file/d/10BD4vugZ9ybMKbScIGl3txT1hRP6bEMm/view?usp=sharing).
 <p align="center">
   <img src="docs/trout.png" width="95%">
 </p>
